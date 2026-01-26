@@ -1,10 +1,11 @@
 import express from 'express';
-import store from '../controllers/agendamentoController.js';
+import {store, getAll} from '../controllers/agendamentoController.js';
 
 
 const router = express.Router();
 
 
 router.post('/agendar', store);
+router.get('/agendamentos', getAll);
 
 export default router;

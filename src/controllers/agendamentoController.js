@@ -1,7 +1,7 @@
-import criarAgendamento from '../services/agendamentoService.js';
+import {criarAgendamento, listarAgendamentos} from '../services/agendamentoService.js';
 
 
-export default async function store(req, res) {
+async function store(req, res) {
     const {cliente, data, hora} = req.body;
 
     try{
@@ -12,3 +12,16 @@ export default async function store(req, res) {
         res.status(400).json({ error: error.message });
     }
 };
+
+async function getAll(req, res) {
+
+    const {data} = req.query;
+    try {
+        const agendamentos = await listarAgendamentos(data);
+        res.status(200).json(agendamentos);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+export {store, getAll};
