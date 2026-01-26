@@ -1,11 +1,12 @@
 import express from 'express';
-import {store, getAll} from '../controllers/agendamentoController.js';
+import {agendar, listar, cancelar} from '../controllers/agendamentoController.js';
 
 
 const router = express.Router();
 
 
-router.post('/agendar', store);
-router.get('/agendamentos', getAll);
+router.post('/agendar', agendar);
+router.get('/agendamentos', listar);
+router.delete('/agendamentos/:id', cancelar);
 
 export default router;

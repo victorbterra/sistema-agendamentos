@@ -1,7 +1,7 @@
-import {criarAgendamento, listarAgendamentos} from '../services/agendamentoService.js';
+import {criarAgendamento, listarAgendamentos, cancelarAgendamento} from '../services/agendamentoService.js';
 
 
-async function store(req, res) {
+async function agendar(req, res) {
     const {cliente, data, hora} = req.body;
 
     try{
@@ -13,7 +13,7 @@ async function store(req, res) {
     }
 };
 
-async function getAll(req, res) {
+async function listar(req, res) {
 
     const {data} = req.query;
     try {
@@ -24,4 +24,15 @@ async function getAll(req, res) {
     }
 }
 
-export {store, getAll};
+async function cancelar(req, res) {
+    const { id } = req.params;
+
+    try {
+        await cancelarAgendamento(parseInt(id));
+        res.status(204).send({message: "Agendamento cancelado com sucesso."});
+    } catch (error) {
+        res.status(500).json({ error: "Não foi possível cancelar: agendamento não encontrado." });
+    }
+}
+
+export {agendar, listar, cancelar};

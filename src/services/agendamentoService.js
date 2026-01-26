@@ -1,5 +1,16 @@
 import prisma from '../lib/prisma.js';
 
+
+async function index (req, res) {
+    const { data } = req.query;
+    try {
+        const agendamentos = await listarAgendamentos(data);
+        res.status(200).json(agendamentos);
+    } catch (error) {
+        res.status(500).json({ error: "Erro ao buscar agendamentos" });
+    }
+}
+
 async function criarAgendamento(cliente, data, hora) {
     const conflito = await prisma.Agendamento.findFirst({
         where: {
@@ -30,14 +41,11 @@ async function listarAgendamentos(dataFiltro) {
     });
 }
 
-async function index (req, res) {
-    const { data } = req.query;
-    try {
-        const agendamentos = await listarAgendamentos(data);
-        res.status(200).json(agendamentos);
-    } catch (error) {
-        res.status(500).json({ error: "Erro ao buscar agendamentos" });
-    }
+async function cancelarAgendamento(id){
+    return await prisma.Agendamento.delete({
+        where: { id }
+    });
 }
 
-export {criarAgendamento, listarAgendamentos, index};
+
+export { criarAgendamento, listarAgendamentos,cancelarAgendamento };
