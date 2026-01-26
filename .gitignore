@@ -114,3 +114,4 @@ coverage/
 .DS_Store
 npm-debug.log
 yarn-error.log
+/generated/prisma
