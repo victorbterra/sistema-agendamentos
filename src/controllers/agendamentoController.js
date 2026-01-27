@@ -1,8 +1,11 @@
-import {criarAgendamento, listarAgendamentos, cancelarAgendamento} from '../services/agendamentoService.js';
+import {criarAgendamento, listarAgendamentos, cancelarAgendamento, remarcarAgendamento} from '../services/agendamentoService.js';
 
 
 async function agendar(req, res) {
-    const {cliente, data, hora} = req.body;
+    
+    const cliente = req.body.cliente;
+    const data = req.body.data;
+    const hora = req.body.hora;
 
     try{
         const novoAgendamento = await criarAgendamento(cliente, data, hora);
@@ -25,7 +28,7 @@ async function listar(req, res) {
 }
 
 async function cancelar(req, res) {
-    const { id } = req.params;
+    const id = req.params.id;
 
     try {
         await cancelarAgendamento(parseInt(id));
@@ -35,4 +38,22 @@ async function cancelar(req, res) {
     }
 }
 
-export {agendar, listar, cancelar};
+async function remarcar(req, res) {
+    //pegar o id
+    const id = req.params.id;
+
+    //pegar a nova data e hora
+    const novaData = req.body.data;
+    const novaHora = req.body.hora;
+
+    //chamar o serviço de remarcar
+    try {
+        const atualizado = await remarcarAgendamento(id, novaData, novaHora);
+        res.status(200).json(atualizado);
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+export {agendar, listar, cancelar, remarcar};

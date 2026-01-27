@@ -7,7 +7,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Agendamento {
+model agendamento {
   id        Int      @id @default(autoincrement())
   cliente   String
   data      String
