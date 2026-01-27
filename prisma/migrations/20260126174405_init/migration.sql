@@ -1,8 +1,0 @@
--- CreateTable
-CREATE TABLE "Agendamento" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "cliente" TEXT NOT NULL,
-    "data" TEXT NOT NULL,
-    "hora" TEXT NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
