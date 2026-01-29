@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 import AcessibilidadeWidget from "./components/AcessibilidadeWidget";
 import Modal from "./components/Modal";
 import AgendamentoForm from "./components/AgendamentoForm";
+import {useAuth} from "./contexts/AuthContext";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
+  const {logado, loading, logout, usuario} = useAuth();
   const [agendamentos, setAgendamentos] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -41,13 +44,19 @@ function App() {
     };
     fetchData();
   }, []);
+  if (loading) return <div className="flex items-center justify-center h-screen font-bold text-teal-600">Carregando...</div>;
 
+  if (!logado) return <LoginPage />;
   return (
     <div className="max-w-4xl mx-auto p-4 h-full">
       <header className="mb-6 border-b-slate-300 border-b flex justify-between items-center pb-4">
-        <h1 className="text-2xl xl:text-3xl font-bold">
-          Sistema de Agendamentos
-        </h1>
+        <div>
+          <h1 className="text-2xl xl:text-3xl font-bold">Sistema de Agendamentos</h1>
+          <p className="text-slate-600">Bem-vindo, {usuario.nome}!</p>
+        </div>
+        <button onClick={logout} className="text-slate-400 hover:text-red-500 text-sm font-bold border border-slate-200 px-4 py-2 rounded-lg">
+          Sair
+        </button>
       </header>
 
       <main className="grid gap-6">
