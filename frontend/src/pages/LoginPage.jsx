@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
-export default function LoginPage() {
+export default function LoginPage({ onAlternar }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
@@ -26,7 +26,6 @@ export default function LoginPage() {
         <p className="text-slate-500 text-center mb-8">
           Acesse sua conta para gerenciar seus agendamentos
         </p>
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -63,6 +62,18 @@ export default function LoginPage() {
             Entrar no Sistema
           </button>
         </form>
+        <div className="mt-6 text-center">
+          <p className="text-slate-500 text-sm">
+            Não tem uma conta?{" "}
+            <button
+              onClick={onAlternar}
+              type="button"
+              className="text-teal-600 font-bold hover:underline ml-1"
+            >
+              Cadastre-se aqui
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );

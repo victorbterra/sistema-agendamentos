@@ -4,13 +4,16 @@ import { useEffect, useState } from "react";
 import AcessibilidadeWidget from "./components/AcessibilidadeWidget";
 import Modal from "./components/Modal";
 import AgendamentoForm from "./components/AgendamentoForm";
-import {useAuth} from "./contexts/AuthContext";
+import { useAuth } from "./contexts/AuthContext";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
-  const {logado, loading, logout, usuario} = useAuth();
+  const { logado, loading, logout, usuario } = useAuth();
   const [agendamentos, setAgendamentos] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [mostrandoLogin, setMostrandoLogin] = useState(true);
+  const [mostrarndoRegistro, setMostrandoRegistro] = useState(false);
 
   const aoSalvarComSucesso = () => {
     carregarAgendamentos();
@@ -18,12 +21,14 @@ function App() {
   };
 
   const carregarAgendamentos = async () => {
-    try {
-      const res = await api.get("/agendamentos");
-      setAgendamentos(res.data);
-    } catch (error) {
-      console.error("Erro ao carregar agendamentos:", error);
+  try {
+    const response = await api.get('/agendamentos');
+    setAgendamentos(response.data);
+  } catch (error) {
+    if (error.response?.status !== 401) {
+      console.error("Erro ao carregar:", error);
     }
+  }
   };
 
   const handleDelete = async (id) => {
@@ -40,23 +45,42 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!logado)return;
       await carregarAgendamentos();
     };
     fetchData();
-  }, []);
-  if (loading) return <div className="flex items-center justify-center h-screen font-bold text-teal-600">Carregando...</div>;
+  }, [logado]);
 
-  if (!logado) return <LoginPage />;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen font-bold text-teal-600">
+        Carregando...
+      </div>
+    );
+
+  if (!logado) {
+    return mostrarndoRegistro ? (
+      <RegisterPage aoSucesso={() => setMostrandoRegistro(false)} />
+    ) : (
+      <LoginPage onAlternar={() => setMostrandoRegistro(true)} />
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-4 h-full">
       <header className="mb-6 border-b-slate-300 border-b flex justify-between items-center pb-4">
-        <div>
-          <h1 className="text-2xl xl:text-3xl font-bold">Sistema de Agendamentos</h1>
-          <p className="text-slate-600">Bem-vindo, {usuario.nome}!</p>
+        <h1 className="text-xl xl:text-3xl font-bold">Sistema de Agenda</h1>
+        <div className="flex items-center gap-4">
+          <p className="text-slate-600 text-sm md:text-md lg:text-lg">
+            Olá, {usuario.nome}!
+          </p>
+          <button
+            onClick={logout}
+            className="text-slate-400 hover:text-red-500 text-sm font-bold border border-slate-200 px-2 py-1.5 rounded-lg"
+          >
+            Sair
+          </button>
         </div>
-        <button onClick={logout} className="text-slate-400 hover:text-red-500 text-sm font-bold border border-slate-200 px-4 py-2 rounded-lg">
-          Sair
-        </button>
       </header>
 
       <main className="grid gap-6">
