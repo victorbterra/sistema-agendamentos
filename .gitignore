@@ -4,3 +4,7 @@ dist
 .vscode
 *.db
 *-journal
+
+# Databases
+*.db
+*.db-journal

@@ -17,6 +17,10 @@ pids/
 tmp/
 temp/
 
+# Databases
+*.db
+*.db-journal
+
 # Environment variables
 .env
 .env.*
