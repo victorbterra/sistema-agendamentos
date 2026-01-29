@@ -7,10 +7,24 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model agendamento {
-  id        Int      @id @default(autoincrement())
-  cliente   String
-  data      String
-  hora      String
-  createdAt DateTime @default(now())
+model usuario {
+    id        Int      @id @default(autoincrement())
+    email     String   @unique
+    senha     String
+    nome      String
+    agendamentos     Agendamento[]
 }
+
+model Agendamento {
+    id        Int      @id @default(autoincrement())
+    cliente   String
+    data      String
+    hora      String
+    createdAt DateTime @default(now())
+
+    //Relacionamento
+    usuario     usuario   @relation(fields: [usuarioId], references: [id])
+    usuarioId   Int
+}
+
+

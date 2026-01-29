@@ -2,7 +2,6 @@ import {criarAgendamento, listarAgendamentos, cancelarAgendamento, remarcarAgend
 
 
 async function agendar(req, res) {
-    
     const cliente = req.body.cliente;
     const data = req.body.data;
     const hora = req.body.hora;
