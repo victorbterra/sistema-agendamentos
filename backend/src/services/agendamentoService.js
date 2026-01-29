@@ -15,6 +15,7 @@ async function criarAgendamento(cliente, data, hora) {
     where: {
       data,
       hora,
+      usuarioId:req.usuarioId
     },
   });
 
@@ -27,12 +28,13 @@ async function criarAgendamento(cliente, data, hora) {
       cliente,
       data,
       hora,
+      usuarioId:req.usuarioId
     },
   });
 }
 
 async function listarAgendamentos(dataFiltro) {
-  const onde = dataFiltro ? { data: dataFiltro } : {};
+  const onde = dataFiltro ? { data: dataFiltro, usuarioId:req.usuarioId } : {};
 
   return await prisma.Agendamento.findMany({
     where: onde,
